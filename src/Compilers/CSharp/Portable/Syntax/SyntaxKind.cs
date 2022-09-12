@@ -320,6 +320,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         ExplicitKeyword = 8383,
         /// <summary>Represents <see langword="implicit"/>.</summary>
         ImplicitKeyword = 8384,
+        /// <summary>Represents <see langword="absorb"/>.</summary>
+        AbsorbKeyword = 8385,
 
         // contextual keywords
         /// <summary>Represents <see langword="yield"/>.</summary>
