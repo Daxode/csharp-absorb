@@ -981,6 +981,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.OperatorKeyword;
                 case "implicit":
                     return SyntaxKind.ImplicitKeyword;
+                case "absorb":
+                    return SyntaxKind.AbsorbKeyword;
                 case "explicit":
                     return SyntaxKind.ExplicitKeyword;
                 default:
