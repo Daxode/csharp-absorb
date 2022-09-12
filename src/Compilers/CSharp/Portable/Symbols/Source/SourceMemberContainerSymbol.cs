@@ -1420,6 +1420,31 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             return ImmutableArray<Symbol>.Empty;
         }
 
+        public ImmutableArray<Symbol> GetAbsorbedMembers(string name)
+        {
+            var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
+            //ImmutableArray<Symbol> absorbedMembers = new();
+            foreach (var field in GetMembers().OfType<FieldSymbol>())
+            {
+                // are you absorbed?
+                if (field.Name.StartsWith("absorb_")) // TODO: actual absorb keyword
+                {
+                    // Do you have a match
+                    var mem = field.Type.GetMembers(name);
+                    if(mem.Length != 0)
+                        immutableBuilder.AddRange(mem);
+        
+                    // (Do you have a match) in you hierarchy
+                    //if (memberTypeSymbol is SourceMemberContainerTypeSymbol namedTypeSymbol)
+                    //{
+                    //    absorbedMembers = absorbedMembers.Concat(namedTypeSymbol.GetAbsorbedMembers(name));
+                    //}
+                }
+            }
+        
+            return immutableBuilder.ToImmutable();
+        }
+
         /// <remarks>
         /// For source symbols, there can only be a valid clone method if this is a record, which is a
         /// simple syntax check. This will need to change when we generalize cloning, but it's a good

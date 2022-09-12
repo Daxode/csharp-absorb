@@ -1307,7 +1307,22 @@ symIsHidden:;
             }
             else
             {
-                return nsOrType.GetMembers(name);
+                if (nsOrType is SourceMemberContainerTypeSymbol namedTypeSymbol)
+                {
+                    var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
+                    immutableBuilder.AddRange(nsOrType.GetMembers(name));
+
+                    var absorbedMembers = namedTypeSymbol.GetAbsorbedMembers(name);
+                    if(absorbedMembers.Length != 0)
+                    {
+                        immutableBuilder.AddRange(absorbedMembers);
+                    }
+                    return immutableBuilder.ToImmutable();
+                }
+                else
+                {
+                    return nsOrType.GetMembers(name);
+                }
             }
         }
 
