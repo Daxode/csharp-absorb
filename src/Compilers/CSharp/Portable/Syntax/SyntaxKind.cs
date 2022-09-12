@@ -262,8 +262,6 @@ namespace Microsoft.CodeAnalysis.CSharp
         NewKeyword = 8354,
         /// <summary>Represents <see langword="override"/>.</summary>
         OverrideKeyword = 8355,
-        /// <summary>Represents <see langword="absorb"/>.</summary>
-        AbsorbKeyword = 8355,
         /// <summary>Represents <see langword="abstract"/>.</summary>
         AbstractKeyword = 8356,
         /// <summary>Represents <see langword="virtual"/>.</summary>
@@ -322,6 +320,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         ExplicitKeyword = 8383,
         /// <summary>Represents <see langword="implicit"/>.</summary>
         ImplicitKeyword = 8384,
+        /// <summary>Represents <see langword="absorb"/>.</summary>
+        AbsorbKeyword = 8385,
 
         // contextual keywords
         /// <summary>Represents <see langword="yield"/>.</summary>
