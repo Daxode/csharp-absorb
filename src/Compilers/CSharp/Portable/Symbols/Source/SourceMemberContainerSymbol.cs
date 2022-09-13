@@ -1427,13 +1427,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             foreach (var field in GetMembers().OfType<FieldSymbol>())
             {
                 // are you absorbed?
-                if (field.IsAbsorb) // TODO: actual absorb keyword
+                if (field.IsAbsorb)
                 {
                     // Do you have a match
                     var mem = field.Type.GetMembers(name);
                     if(mem.Length != 0)
                         immutableBuilder.AddRange(mem);
-        
                     // (Do you have a match) in you hierarchy
                     //if (memberTypeSymbol is SourceMemberContainerTypeSymbol namedTypeSymbol)
                     //{
@@ -1441,7 +1440,6 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     //}
                 }
             }
-        
             return immutableBuilder.ToImmutable();
         }
 
