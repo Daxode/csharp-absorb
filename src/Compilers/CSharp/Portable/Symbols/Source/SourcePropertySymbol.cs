@@ -282,7 +282,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                     DeclarationModifiers.Sealed |
                                     DeclarationModifiers.Abstract |
                                     DeclarationModifiers.Virtual |
-                                    DeclarationModifiers.AccessibilityMask;
+                                    DeclarationModifiers.AccessibilityMask | DeclarationModifiers.Absorb;
 
                 if (!isIndexer)
                 {
