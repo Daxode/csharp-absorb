@@ -1427,7 +1427,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             foreach (var field in GetMembers().OfType<FieldSymbol>())
             {
                 // are you absorbed?
-                if (field.Name.StartsWith("absorb_")) // TODO: actual absorb keyword
+                if (field.IsAbsorb) // TODO: actual absorb keyword
                 {
                     // Do you have a match
                     var mem = field.Type.GetMembers(name);
