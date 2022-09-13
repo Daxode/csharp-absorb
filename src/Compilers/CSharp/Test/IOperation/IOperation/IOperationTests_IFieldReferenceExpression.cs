@@ -709,5 +709,36 @@ class C<T>
                 Assert.Equal(fieldSym.GetHashCode(), fieldReferenceOperation.Field.GetHashCode());
             }
         }
+
+
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_Absorbed()
+        {
+            string source = @"
+class A
+{
+    public int X;
+}
+
+class C
+{
+    absorb A a;
+
+    void Blah()
+    {
+        X = 1;
+    }
+}
+";
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 C.i (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'i')
+    Instance Receiver: 
+        IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'i')
+";
+            var expectedDiagnostics = DiagnosticDescription.None;
+
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
     }
 }

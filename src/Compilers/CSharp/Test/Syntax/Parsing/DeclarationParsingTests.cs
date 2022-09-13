@@ -3804,6 +3804,47 @@ class Class1<T>{
         }
 
         [Fact]
+        public void TestClassAbsorbedField()
+        {
+            var text = "class a { absorb b c; }";
+            var file = this.ParseFile(text);
+
+            Assert.NotNull(file);
+            Assert.Equal(1, file.Members.Count);
+            Assert.Equal(text, file.ToString());
+            Assert.Equal(0, file.Errors().Length);
+
+            Assert.Equal(SyntaxKind.ClassDeclaration, file.Members[0].Kind());
+            var cs = (TypeDeclarationSyntax)file.Members[0];
+            Assert.Equal(0, cs.AttributeLists.Count);
+            Assert.Equal(0, cs.Modifiers.Count);
+            Assert.NotEqual(default, cs.Keyword);
+            Assert.Equal(SyntaxKind.ClassKeyword, cs.Keyword.Kind());
+            Assert.NotEqual(default, cs.Identifier);
+            Assert.Equal("a", cs.Identifier.ToString());
+            Assert.Null(cs.BaseList);
+            Assert.Equal(0, cs.ConstraintClauses.Count);
+            Assert.NotEqual(default, cs.OpenBraceToken);
+            Assert.NotEqual(default, cs.CloseBraceToken);
+
+            Assert.Equal(1, cs.Members.Count);
+
+            Assert.Equal(SyntaxKind.FieldDeclaration, cs.Members[0].Kind());
+            var fs = (FieldDeclarationSyntax)cs.Members[0];
+            Assert.Equal(0, fs.AttributeLists.Count);
+            Assert.Equal(1, fs.Modifiers.Count);
+            Assert.Equal(SyntaxKind.AbsorbKeyword, fs.Modifiers[0].Kind());
+            Assert.NotNull(fs.Declaration.Type);
+            Assert.Equal("b", fs.Declaration.Type.ToString());
+            Assert.Equal(1, fs.Declaration.Variables.Count);
+            Assert.NotEqual(default, fs.Declaration.Variables[0].Identifier);
+            Assert.Equal("c", fs.Declaration.Variables[0].Identifier.ToString());
+            Assert.Null(fs.Declaration.Variables[0].ArgumentList);
+            Assert.NotEqual(default, fs.SemicolonToken);
+            Assert.False(fs.SemicolonToken.IsMissing);
+        }
+
+        [Fact]
         public void TestClassConstField()
         {
             var text = "class a { const b c = d; }";
