@@ -162,7 +162,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 DeclarationModifiers.Fixed |
                 DeclarationModifiers.Unsafe |
                 DeclarationModifiers.Abstract |
-                DeclarationModifiers.Required; // Some of these are filtered out later, when illegal, for better error messages.
+                DeclarationModifiers.Required |
+                DeclarationModifiers.Absorb; // Some of these are filtered out later, when illegal, for better error messages.
 
             var errorLocation = new SourceLocation(firstIdentifier);
             DeclarationModifiers result = ModifierUtils.MakeAndCheckNontypeMemberModifiers(

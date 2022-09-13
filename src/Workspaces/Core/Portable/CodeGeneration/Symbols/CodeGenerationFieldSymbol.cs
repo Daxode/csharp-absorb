@@ -78,6 +78,14 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         public bool IsVolatile => false;
 
+        public bool IsAbsorb
+        {
+            get
+            {
+                return this.Modifiers.IsAbsorb;
+            }
+        }
+
         public bool IsRequired => Modifiers.IsRequired;
 
         public bool IsFixedSizeBuffer => false;

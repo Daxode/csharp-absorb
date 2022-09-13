@@ -1150,6 +1150,8 @@ tryAgain:
                     return DeclarationModifiers.Volatile;
                 case SyntaxKind.UnsafeKeyword:
                     return DeclarationModifiers.Unsafe;
+                case SyntaxKind.AbsorbKeyword:
+                    return DeclarationModifiers.Absorb;
                 case SyntaxKind.PartialKeyword:
                     return DeclarationModifiers.Partial;
                 case SyntaxKind.AsyncKeyword:
@@ -2186,6 +2188,7 @@ tryAgain:
                 case SyntaxKind.VirtualKeyword:
                 case SyntaxKind.VoidKeyword:
                 case SyntaxKind.VolatileKeyword:
+                case SyntaxKind.AbsorbKeyword:
                 case SyntaxKind.IdentifierToken:
                 case SyntaxKind.TildeToken:
                 case SyntaxKind.OpenBracketToken:

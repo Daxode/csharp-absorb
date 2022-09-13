@@ -39,7 +39,8 @@ namespace Microsoft.CodeAnalysis.Editing
             bool isVolatile = false,
             bool isExtern = false,
             bool isRequired = false,
-            bool isFile = false)
+            bool isFile = false,
+            bool isAbsorb = false)
             : this(
                   (isStatic ? Modifiers.Static : Modifiers.None) |
                   (isAbstract ? Modifiers.Abstract : Modifiers.None) |
@@ -58,7 +59,8 @@ namespace Microsoft.CodeAnalysis.Editing
                   (isVolatile ? Modifiers.Volatile : Modifiers.None) |
                   (isExtern ? Modifiers.Extern : Modifiers.None) |
                   (isRequired ? Modifiers.Required : Modifiers.None) |
-                  (isFile ? Modifiers.File : Modifiers.None))
+                  (isFile ? Modifiers.File : Modifiers.None) |
+                  (isAbsorb ? Modifiers.Absorb : Modifiers.None))
         {
         }
 
@@ -87,7 +89,9 @@ namespace Microsoft.CodeAnalysis.Editing
                     isExtern: symbol.IsExtern,
                     isAsync: method?.IsAsync == true,
                     isRequired: symbol.IsRequired(),
-                    isFile: (symbol as INamedTypeSymbol)?.IsFileLocal == true);
+                    isFile: (symbol as INamedTypeSymbol)?.IsFileLocal == true,
+                    isAbsorb: field?.IsAbsorb == true
+                    );
             }
 
             // Only named types, members of named types, and local functions have modifiers.
@@ -130,6 +134,7 @@ namespace Microsoft.CodeAnalysis.Editing
         public bool IsRequired => (_modifiers & Modifiers.Required) != 0;
 
         public bool IsFile => (_modifiers & Modifiers.File) != 0;
+        public bool IsAbsorb => (_modifiers & Modifiers.Absorb) != 0;
 
         public DeclarationModifiers WithIsStatic(bool isStatic)
             => new(SetFlag(_modifiers, Modifiers.Static, isStatic));
@@ -185,6 +190,8 @@ namespace Microsoft.CodeAnalysis.Editing
 
         public DeclarationModifiers WithIsFile(bool isFile)
             => new(SetFlag(_modifiers, Modifiers.File, isFile));
+        public DeclarationModifiers WithIsAbsorb(bool isAbsorb)
+            => new(SetFlag(_modifiers, Modifiers.Absorb, isAbsorb));
 
         private static Modifiers SetFlag(Modifiers existing, Modifiers modifier, bool isSet)
             => isSet ? (existing | modifier) : (existing & ~modifier);
@@ -212,6 +219,7 @@ namespace Microsoft.CodeAnalysis.Editing
             Extern      = 1 << 15,
             Required    = 1 << 16,
             File        = 1 << 17,
+            Absorb = 1 << 18,
 #pragma warning restore format
         }
 
@@ -235,6 +243,7 @@ namespace Microsoft.CodeAnalysis.Editing
         public static DeclarationModifiers Extern => new(Modifiers.Extern);
         public static DeclarationModifiers Required => new(Modifiers.Required);
         public static DeclarationModifiers File => new(Modifiers.File);
+        public static DeclarationModifiers Absorb => new(Modifiers.Absorb);
 
         public static DeclarationModifiers operator |(DeclarationModifiers left, DeclarationModifiers right)
             => new(left._modifiers | right._modifiers);

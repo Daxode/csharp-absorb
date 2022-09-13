@@ -981,6 +981,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.OperatorKeyword;
                 case "implicit":
                     return SyntaxKind.ImplicitKeyword;
+                case "absorb":
+                    return SyntaxKind.AbsorbKeyword;
                 case "explicit":
                     return SyntaxKind.ExplicitKeyword;
                 default:
@@ -1562,6 +1564,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return "stackalloc";
                 case SyntaxKind.VolatileKeyword:
                     return "volatile";
+                case SyntaxKind.AbsorbKeyword:
+                    return "absorb";
                 case SyntaxKind.NewKeyword:
                     return "new";
                 case SyntaxKind.OverrideKeyword:

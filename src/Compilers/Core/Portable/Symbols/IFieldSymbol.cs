@@ -42,6 +42,11 @@ namespace Microsoft.CodeAnalysis
         bool IsVolatile { get; }
 
         /// <summary>
+        /// Returns true if this field was declared as "absorb". 
+        /// </summary>
+        bool IsAbsorb { get; }
+
+        /// <summary>
         /// True if this field is required to be set in an object initializer during construction.
         /// </summary>
         bool IsRequired { get; }
