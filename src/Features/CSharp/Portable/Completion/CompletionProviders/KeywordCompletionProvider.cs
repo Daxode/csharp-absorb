@@ -167,7 +167,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 new WhereKeywordRecommender(),
                 new WhileKeywordRecommender(),
                 new WithKeywordRecommender(),
-                new YieldKeywordRecommender()))
+                new YieldKeywordRecommender(),
+                new AbsorbKeywordRecommender()))
         {
         }
 
