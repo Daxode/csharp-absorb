@@ -1996,16 +1996,31 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
+                var hasErrors = false;
+
                 // !absorb!
                 // The declaring type of our field is not our containing type!
                 // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
-                //
-                // In this case, create the following bound node(s) as the receiver for our field:
-                // BoundFieldAccess(ThisReference(CurrentType), AbsorbedFieldSymbol)
-                bool hasErrors = false;
+
+                // First we need to find the actual absorbed field that has our bound FieldSymbol as a member
+                FieldSymbol containingField = null;
+                foreach (var field in currentType.GetMembers().OfType<FieldSymbol>())
+                {
+                    if (field.IsAbsorb)
+                    {
+                        foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<FieldSymbol>())
+                        {
+                            if (absorbedFieldMember == member)
+                                containingField = field;
+                        }
+                    }
+                }
+
+                if (containingField == null)
+                    hasErrors = true;
+
                 var thisReference = ThisReference(node, currentType, hasErrors, wasCompilerGenerated: true);
-                var firstField = currentType.GetMembers()[0] as FieldSymbol;
-                var receiverReference = new BoundFieldAccess(node, thisReference, firstField, null, hasErrors);
+                var receiverReference = new BoundFieldAccess(node, thisReference, containingField, null, hasErrors);
                 receiverReference = receiverReference.MakeCompilerGenerated();
                 return receiverReference;
 

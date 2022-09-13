@@ -742,5 +742,38 @@ IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: 
             var expectedDiagnostics = DiagnosticDescription.None;
             VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
         }
+
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_AbsorbedNotFirstField()
+        {
+            string source = @"
+class A
+{
+    public int X = 1;
+}
+
+class C
+{
+    public int Y = 1;
+    absorb A a = new A();
+
+    void Blah()
+    {
+        var i1 = /*<bind>*/X/*</bind>*/;
+    }
+}
+";
+            // Ensure that we have the correct tree of bound  nodes for our bound expression
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+
+            var expectedDiagnostics = DiagnosticDescription.None;
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
     }
 }
