@@ -2146,6 +2146,7 @@ class C { }";
         #endregion
 
 
+        // !absorb!
         [Fact]
         public void LookupAbsorbedField()
         {

@@ -710,7 +710,7 @@ class C<T>
             }
         }
 
-
+        // !absorb!
         [CompilerTrait(CompilerFeature.IOperation)]
         [Fact]
         public void IFieldReferenceExpression_Absorbed()
@@ -731,6 +731,7 @@ class C
     }
 }
 ";
+            // Ensure that we have the correct tree of bound  nodes for our bound expression
             string expectedOperationTree = @"
 IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
     Instance Receiver:

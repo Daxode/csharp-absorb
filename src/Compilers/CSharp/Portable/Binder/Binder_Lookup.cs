@@ -1307,6 +1307,7 @@ symIsHidden:;
             }
             else
             {
+                // !absorb!
                 if (nsOrType is SourceMemberContainerTypeSymbol namedTypeSymbol)
                 {
                     var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();

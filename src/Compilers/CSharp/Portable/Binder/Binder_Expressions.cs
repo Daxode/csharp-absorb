@@ -1996,7 +1996,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
+                // !absorb!
+                // The declaring type of our field is not our containing type!
                 // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
+                //
+                // In this case, create the following bound node(s) as the receiver for our field:
+                // BoundFieldAccess(ThisReference(CurrentType), AbsorbedFieldSymbol)
                 bool hasErrors = false;
                 var thisReference = ThisReference(node, currentType, hasErrors, wasCompilerGenerated: true);
                 var firstField = currentType.GetMembers()[0] as FieldSymbol;
