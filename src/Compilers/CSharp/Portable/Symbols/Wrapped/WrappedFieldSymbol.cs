@@ -152,6 +152,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
+        public override bool IsAbsorb
+        {
+            get
+            {
+                return _underlyingField.IsAbsorb;
+            }
+        }
+
         public override bool IsConst
         {
             get

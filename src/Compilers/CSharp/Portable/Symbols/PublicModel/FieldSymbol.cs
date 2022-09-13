@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.PublicModel
         bool IFieldSymbol.IsReadOnly => _underlying.IsReadOnly;
 
         bool IFieldSymbol.IsVolatile => _underlying.IsVolatile;
-
+        bool IFieldSymbol.IsAbsorb => _underlying.IsAbsorb;
         bool IFieldSymbol.IsRequired => _underlying.IsRequired;
 
         bool IFieldSymbol.IsFixedSizeBuffer => _underlying.IsFixedSizeBuffer;

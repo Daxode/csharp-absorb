@@ -107,6 +107,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get { return (_modifiers & DeclarationModifiers.ReadOnly) != 0; }
         }
 
+        public override bool IsAbsorb
+        {
+            get { return (_modifiers & DeclarationModifiers.Absorb) != 0; }
+        }
+
         public override bool IsVolatile
         {
             get { return false; }

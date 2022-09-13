@@ -42,6 +42,7 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
             public bool IsReadOnly => _symbol.IsReadOnly;
 
             public bool IsVolatile => _symbol.IsVolatile;
+            public bool IsAbsorb => _symbol.IsAbsorb;
 
             public bool IsRequired => _symbol.IsRequired;
 

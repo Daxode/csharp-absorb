@@ -469,6 +469,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             }
         }
 
+        public override bool IsAbsorb => throw new NotImplementedException();
+
         public override bool IsConst
         {
             get

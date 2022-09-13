@@ -92,6 +92,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 get { return false; }
             }
 
+            public override bool IsAbsorb
+            {
+                get { return false; }
+            }
+
             internal sealed override ObsoleteAttributeData ObsoleteAttributeData
             {
                 get { return null; }

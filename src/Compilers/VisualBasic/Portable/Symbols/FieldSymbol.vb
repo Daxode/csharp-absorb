@@ -418,6 +418,12 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Symbols
             End Get
         End Property
 
+        Private ReadOnly Property IFieldSymbol_IsAbsorb As Boolean Implements IFieldSymbol.IsAbsorb
+            Get
+                Return False
+            End Get
+        End Property
+
         Private ReadOnly Property IFieldSymbol_IsRequired As Boolean Implements IFieldSymbol.IsRequired
             Get
                 Return False

@@ -1564,6 +1564,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return "stackalloc";
                 case SyntaxKind.VolatileKeyword:
                     return "volatile";
+                case SyntaxKind.AbsorbKeyword:
+                    return "absorb";
                 case SyntaxKind.NewKeyword:
                     return "new";
                 case SyntaxKind.OverrideKeyword:
