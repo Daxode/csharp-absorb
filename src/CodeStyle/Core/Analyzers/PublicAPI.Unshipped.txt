@@ -32,6 +32,7 @@ Microsoft.CodeAnalysis.Internal.Editing.DeclarationKind.Variable = 21 -> Microso
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.DeclarationModifiers() -> void
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Equals(Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers modifiers) -> bool
+Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsAbsorb.get -> bool
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsAbstract.get -> bool
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsAsync.get -> bool
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsConst.get -> bool
@@ -51,6 +52,7 @@ Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsVolatile.get -> b
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsWithEvents.get -> bool
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.IsWriteOnly.get -> bool
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithAsync(bool isAsync) -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
+Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithIsAbsorb(bool isAbsorb) -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithIsAbstract(bool isAbstract) -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithIsConst(bool isConst) -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithIsExtern(bool isExtern) -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
@@ -71,6 +73,7 @@ Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.WithWithEvents(bool
 override Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Equals(object obj) -> bool
 override Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.GetHashCode() -> int
 override Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.ToString() -> string
+static Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Absorb.get -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 static Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Abstract.get -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 static Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Async.get -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers
 static Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers.Const.get -> Microsoft.CodeAnalysis.Internal.Editing.DeclarationModifiers

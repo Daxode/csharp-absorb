@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
             { ModifierFlags.Volatile, SyntaxKind.VolatileKeyword },
             { ModifierFlags.Unsafe, SyntaxKind.UnsafeKeyword },
             { ModifierFlags.Async, SyntaxKind.AsyncKeyword },
+            { ModifierFlags.Absorb, SyntaxKind.AbsorbKeyword },
             { ModifierFlags.Partial, SyntaxKind.PartialKeyword }
         };
 
@@ -85,6 +86,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
                     case SyntaxKind.VolatileKeyword:
                         result |= ModifierFlags.Volatile;
+                        break;
+                    case SyntaxKind.AbsorbKeyword:
+                        result |= ModifierFlags.Absorb;
                         break;
                     case SyntaxKind.UnsafeKeyword:
                         result |= ModifierFlags.Unsafe;
