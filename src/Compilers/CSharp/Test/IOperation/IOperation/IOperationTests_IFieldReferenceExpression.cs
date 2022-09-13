@@ -718,26 +718,27 @@ class C<T>
             string source = @"
 class A
 {
-    public int X;
+    public int X = 1;
 }
 
 class C
 {
-    absorb A a;
+    absorb A a = new A();
 
     void Blah()
     {
-        X = 1;
+        var i1 = /*<bind>*/X/*</bind>*/;
     }
 }
 ";
             string expectedOperationTree = @"
-IFieldReferenceOperation: System.Int32 C.i (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'i')
-    Instance Receiver: 
-        IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'i')
-";
-            var expectedDiagnostics = DiagnosticDescription.None;
+IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
 
+            var expectedDiagnostics = DiagnosticDescription.None;
             VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
         }
     }

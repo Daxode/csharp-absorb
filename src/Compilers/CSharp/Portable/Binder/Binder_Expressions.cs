@@ -1996,7 +1996,15 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                return TryBindInteractiveReceiver(node, declaringType);
+                // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
+                bool hasErrors = false;
+                var thisReference = ThisReference(node, currentType, hasErrors, wasCompilerGenerated: true);
+                var firstField = currentType.GetMembers()[0] as FieldSymbol;
+                var receiverReference = new BoundFieldAccess(node, thisReference, firstField, null, hasErrors);
+                receiverReference = receiverReference.MakeCompilerGenerated();
+                return receiverReference;
+
+                //return TryBindInteractiveReceiver(node, declaringType);
             }
         }
 
