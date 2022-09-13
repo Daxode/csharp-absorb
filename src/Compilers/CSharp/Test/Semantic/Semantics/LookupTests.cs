@@ -2144,5 +2144,36 @@ class C { }";
         }
 
         #endregion
+
+
+        [Fact]
+        public void LookupAbsorbedField()
+        {
+            const string source = @"
+class A
+{
+    public int X;
+}
+
+class C
+{
+    absorb A a;
+
+    void Blah()
+    {
+        X = 1;
+    }
+}";
+
+
+            var symbols = GetLookupSymbols(source);
+
+            // Check for field "a" in "C" that is absorbed
+            Assert.True(symbols.OfType<Symbols.PublicModel.NonErrorNamedTypeSymbol>().Any(type => type.UnderlyingNamedTypeSymbol.Name == "C"));
+            var typeWithAbsorbedField = symbols.OfType<Symbols.PublicModel.NonErrorNamedTypeSymbol>().First(type => type.UnderlyingNamedTypeSymbol.Name == "C");
+            Assert.NotNull(typeWithAbsorbedField.GetMember("a"));
+            var absorbedField = Assert.IsAssignableFrom<IFieldSymbol>(typeWithAbsorbedField.GetMember("a"));
+            Assert.True(absorbedField.IsAbsorb);
+        }
     }
 }
