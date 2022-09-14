@@ -133,6 +133,16 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Symbols
         End Property
 
         ''' <summary>
+        ''' Returns true if this property is absorb
+        ''' </summary>
+
+        Public Overridable ReadOnly Property IsAbsorb As Boolean Implements IPropertySymbol.IsAbsorb
+            Get
+                Return IsAbsorb
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Indicates if the property has a Set accessor.
         ''' </summary>
         Friend ReadOnly Property HasSet As Boolean

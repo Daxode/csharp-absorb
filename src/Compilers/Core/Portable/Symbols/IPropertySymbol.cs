@@ -53,6 +53,11 @@ namespace Microsoft.CodeAnalysis
         bool ReturnsByRefReadonly { get; }
 
         /// <summary>
+        /// Returns true if this field was declared as "absorb". 
+        /// </summary>
+        bool IsAbsorb { get; }
+
+        /// <summary>
         /// Returns the RefKind of the property.
         /// </summary>
         RefKind RefKind { get; }

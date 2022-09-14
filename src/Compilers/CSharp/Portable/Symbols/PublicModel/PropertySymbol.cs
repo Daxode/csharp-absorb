@@ -106,6 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.PublicModel
         bool IPropertySymbol.ReturnsByRef => _underlying.ReturnsByRef;
 
         bool IPropertySymbol.ReturnsByRefReadonly => _underlying.ReturnsByRefReadonly;
+        public bool IsAbsorb => _underlying.IsAbsorb;
 
         RefKind IPropertySymbol.RefKind => _underlying.RefKind;
 

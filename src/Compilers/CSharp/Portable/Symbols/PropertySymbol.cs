@@ -415,6 +415,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
+
+        /// <summary>
+        /// Returns true if this symbol is "absorb"; i.e., declared with the <c>absorb</c> modifier.
+        /// </summary>
+        public abstract bool IsAbsorb { get; }
+
         #endregion
 
         protected sealed override ISymbol CreateISymbol()

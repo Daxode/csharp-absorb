@@ -513,6 +513,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             }
         }
 
+        public override bool IsAbsorb
+        {
+            get
+            {
+                // All accessors absorb.
+                return false;
+            }
+        }
+
         internal override bool IsRequired
         {
             get

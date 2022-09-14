@@ -66,6 +66,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public override Accessibility DeclaredAccessibility { get { return Accessibility.NotApplicable; } }
 
         public override bool IsStatic { get { return false; } }
+        public override bool IsAbsorb { get { return false; } }
 
         public override bool IsVirtual { get { return false; } }
 

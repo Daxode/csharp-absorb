@@ -121,6 +121,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
         }
 
+        public override bool IsAbsorb
+        {
+            get
+            {
+                return _underlyingProperty.IsAbsorb;
+            }
+        }
+
         public override bool IsVirtual
         {
             get

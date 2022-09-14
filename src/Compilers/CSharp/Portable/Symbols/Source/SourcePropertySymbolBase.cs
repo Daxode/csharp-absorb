@@ -477,6 +477,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get { return (_modifiers & DeclarationModifiers.Abstract) != 0; }
         }
 
+        public override bool IsAbsorb
+        {
+            get { return (_modifiers & DeclarationModifiers.Absorb) != 0; }
+        }
+
         public override bool IsExtern
         {
             get { return (_modifiers & DeclarationModifiers.Extern) != 0; }

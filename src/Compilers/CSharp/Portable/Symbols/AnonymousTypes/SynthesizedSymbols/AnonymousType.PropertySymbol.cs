@@ -104,6 +104,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 get { return false; }
             }
 
+            public override bool IsAbsorb
+            {
+                get { return false; }
+            }
+
             public override bool IsOverride
             {
                 get { return false; }

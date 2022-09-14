@@ -80,6 +80,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         public new IPropertySymbol OriginalDefinition => this;
 
+        public bool IsAbsorb => Modifiers.IsAbsorb;
         public RefKind RefKind => _refKind;
 
         public bool ReturnsByRef => _refKind == RefKind.Ref;

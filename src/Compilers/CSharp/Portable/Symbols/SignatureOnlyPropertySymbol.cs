@@ -81,6 +81,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public override bool IsOverride => false;
 
+        public override bool IsAbsorb { get { throw ExceptionUtilities.Unreachable; } }
+
         public override bool IsAbstract { get { throw ExceptionUtilities.Unreachable; } }
 
         public override bool IsSealed { get { throw ExceptionUtilities.Unreachable; } }
