@@ -1996,8 +1996,6 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                var hasErrors = false;
-
                 // !absorb!
                 // The declaring type of our field is not our containing type!
                 // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
@@ -2017,14 +2015,35 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 if (containingField == null)
-                    hasErrors = true;
+                {
+                    PropertySymbol containingProperty = null;
 
-                var thisReference = ThisReference(node, currentType, hasErrors, wasCompilerGenerated: true);
-                var receiverReference = new BoundFieldAccess(node, thisReference, containingField, null, hasErrors);
-                receiverReference = receiverReference.MakeCompilerGenerated();
-                return receiverReference;
+                    foreach (var property in currentType.GetMembers().OfType<PropertySymbol>())
+                    {
+                        if (property.IsAbsorb)
+                        {
+                            foreach (var absorbedPropertyMember in property.Type.GetMembers().OfType<PropertySymbol>())
+                            {
+                                if (absorbedPropertyMember == member)
+                                    containingProperty = property;
+                            }
+                        }
+                    }
 
-                //return TryBindInteractiveReceiver(node, declaringType);
+                    var hasError = containingProperty == null;
+
+                    var thisReference = ThisReference(node, currentType, hasError, wasCompilerGenerated: true);
+                    var receiverReference = new BoundPropertyAccess(node, thisReference, containingProperty, LookupResultKind.Viable, null, hasError);
+                    receiverReference = receiverReference.MakeCompilerGenerated();
+                    return receiverReference;
+                }
+                else
+                {
+                    var thisReference = ThisReference(node, currentType, false, wasCompilerGenerated: true);
+                    var receiverReference = new BoundFieldAccess(node, thisReference, containingField, null, false);
+                    receiverReference = receiverReference.MakeCompilerGenerated();
+                    return receiverReference;
+                }
             }
         }
 

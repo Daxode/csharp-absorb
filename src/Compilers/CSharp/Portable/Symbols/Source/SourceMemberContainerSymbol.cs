@@ -1424,6 +1424,40 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
 
+            foreach (var property in GetMembers().OfType<PropertySymbol>())
+            {
+                // are you absorbed?
+                if (property.IsAbsorb)
+                {
+                    // Do you have a match
+                    var absorbedMembers = property.Type.GetMembers(name);
+                    if (absorbedMembers.Length != 0)
+                        immutableBuilder.AddRange(absorbedMembers);
+
+                    // (Do you have a match) in you hierarchy
+                    if (property.Type.BaseTypeNoUseSiteDiagnostics is SourceMemberContainerTypeSymbol i_namedTypeSymbol)
+                    {
+                        // Search the members of the base
+                        var inheritedMembers = i_namedTypeSymbol.GetMembers(name);
+                        if (inheritedMembers.Length != 0)
+                            immutableBuilder.AddRange(inheritedMembers);
+
+                        // Search the absorbed members of the base
+                        var absorbedAbsorbedMembers = i_namedTypeSymbol.GetAbsorbedMembers(name);
+                        if (absorbedAbsorbedMembers.Length != 0)
+                            immutableBuilder.AddRange(absorbedAbsorbedMembers);
+                    }
+
+                    // (Do you have a match) in your absorbed variables
+                    if (property.Type is SourceMemberContainerTypeSymbol a_namedTypeSymbol)
+                    {
+                        var absorbedAbsorbedMembers = a_namedTypeSymbol.GetAbsorbedMembers(name);
+                        if (absorbedAbsorbedMembers.Length != 0)
+                            immutableBuilder.AddRange(absorbedAbsorbedMembers);
+                    }
+                }
+            }
+
             foreach (var field in GetMembers().OfType<FieldSymbol>())
             {
                 // are you absorbed?
