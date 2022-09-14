@@ -1699,6 +1699,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             if (modifiers.IsVolatile)
                 list.Add(SyntaxFactory.Token(SyntaxKind.VolatileKeyword));
 
+            if (modifiers.IsAbsorb)
+                list.Add(SyntaxFactory.Token(SyntaxKind.AbsorbKeyword));
+
             if (modifiers.IsExtern)
                 list.Add(SyntaxFactory.Token(SyntaxKind.ExternKeyword));
 

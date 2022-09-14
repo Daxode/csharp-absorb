@@ -869,6 +869,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                     AddSpace();
                 }
 
+                if (symbol.IsAbsorb)
+                {
+                    AddKeyword(SyntaxKind.AbsorbKeyword);
+                    AddSpace();
+                }
+
                 //TODO: event
             }
         }

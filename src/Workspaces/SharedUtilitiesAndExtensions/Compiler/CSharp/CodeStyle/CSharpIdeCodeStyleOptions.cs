@@ -27,6 +27,7 @@ internal sealed class CSharpIdeCodeStyleOptions : IdeCodeStyleOptions, IEquatabl
         SyntaxKind.UnsafeKeyword,
         SyntaxKind.RequiredKeyword,
         SyntaxKind.VolatileKeyword,
+        SyntaxKind.AbsorbKeyword,
         SyntaxKind.AsyncKeyword);
 
     private static readonly CodeStyleOption2<UnusedValuePreference> s_discardVariableWithSilentEnforcement =

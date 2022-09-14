@@ -29,6 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 SyntaxKind.UnsafeKeyword,
                 SyntaxKind.VirtualKeyword,
                 SyntaxKind.VolatileKeyword,
+                SyntaxKind.AbsorbKeyword
             };
 
         protected static readonly ISet<SyntaxKind> ValidTypeModifiers = new HashSet<SyntaxKind>(SyntaxFacts.EqualityComparer)

@@ -132,6 +132,7 @@ namespace Microsoft.CodeAnalysis.CSharp.LanguageService
                     SyntaxKind.OverrideKeyword => DeclarationModifiers.Override,
                     SyntaxKind.VirtualKeyword => DeclarationModifiers.Virtual,
                     SyntaxKind.StaticKeyword => DeclarationModifiers.Static,
+                    SyntaxKind.AbsorbKeyword => DeclarationModifiers.Absorb,
                     SyntaxKind.AsyncKeyword => DeclarationModifiers.Async,
                     SyntaxKind.ConstKeyword => DeclarationModifiers.Const,
                     SyntaxKind.ReadOnlyKeyword => DeclarationModifiers.ReadOnly,

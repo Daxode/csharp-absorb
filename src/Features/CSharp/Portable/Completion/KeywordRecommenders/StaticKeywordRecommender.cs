@@ -33,6 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             SyntaxKind.ReadOnlyKeyword,
             SyntaxKind.UnsafeKeyword,
             SyntaxKind.VolatileKeyword,
+            SyntaxKind.AbsorbKeyword
         };
 
         private static readonly ISet<SyntaxKind> s_validInterfaceMemberModifiers = new HashSet<SyntaxKind>(SyntaxFacts.EqualityComparer)
@@ -49,6 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             SyntaxKind.SealedKeyword,
             SyntaxKind.UnsafeKeyword,
             SyntaxKind.VolatileKeyword,
+            SyntaxKind.AbsorbKeyword,
             SyntaxKind.VirtualKeyword,
         };
 

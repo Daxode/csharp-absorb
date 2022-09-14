@@ -36,6 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 SyntaxKind.StaticKeyword,
                 SyntaxKind.UnsafeKeyword,
                 SyntaxKind.VirtualKeyword,
+                SyntaxKind.AbsorbKeyword
                 // SyntaxKind.VolatileKeyword, // fields cannot be byref
             };
 

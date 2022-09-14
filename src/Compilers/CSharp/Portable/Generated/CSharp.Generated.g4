@@ -117,6 +117,7 @@ modifier
   | 'unsafe'
   | 'virtual'
   | 'volatile'
+  | 'absorb'
   ;
 
 variable_declaration

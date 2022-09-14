@@ -38,6 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 SyntaxKind.StaticKeyword,
                 SyntaxKind.VirtualKeyword,
                 SyntaxKind.VolatileKeyword,
+                SyntaxKind.AbsorbKeyword
             };
 
         private static readonly ISet<SyntaxKind> s_validGlobalMemberModifiers = new HashSet<SyntaxKind>(SyntaxFacts.EqualityComparer)

@@ -45,6 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 SyntaxKind.UnsafeKeyword,
                 SyntaxKind.VirtualKeyword,
                 SyntaxKind.VolatileKeyword,
+                SyntaxKind.AbsorbKeyword,
             };
 
         public static readonly ISet<SyntaxKind> AllGlobalMemberModifiers = new HashSet<SyntaxKind>(SyntaxFacts.EqualityComparer)
