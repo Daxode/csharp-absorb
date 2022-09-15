@@ -2029,44 +2029,16 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
 
                 // First we need to find the actual absorbed field that has our bound FieldSymbol as a member
-                FieldSymbol containingField = null;
-                foreach (var field in currentType.GetMembers().OfType<FieldSymbol>())
-                {
-                    if (field.IsAbsorb)
-                    {
-                        foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<FieldSymbol>())
-                        {
-                            if (absorbedFieldMember == member)
-                                containingField = field;
-                        }
-                        foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<PropertySymbol>())
-                        {
-                            if (absorbedFieldMember == member)
-                                containingField = field;
-                        }
-                    }
-                }
+                FieldSymbol containingField = BindFieldMembers(currentType, member);
 
                 if (containingField == null)
                 {
-                    PropertySymbol containingProperty = null;
-
-                    foreach (var property in currentType.GetMembers().OfType<PropertySymbol>())
-                    {
-                        if (property.IsAbsorb)
-                        {
-                            foreach (var absorbedPropertyMember in property.Type.GetMembers().OfType<PropertySymbol>())
-                            {
-                                if (absorbedPropertyMember == member)
-                                    containingProperty = property;
-                            }
-                        }
-                    }
+                    PropertySymbol containingProperty = BindPropertyMembers( currentType, member);
 
                     var hasError = containingProperty == null;
 
                     var thisReference = ThisReference(node, currentType, hasError, wasCompilerGenerated: true);
-                    var receiverReference = new BoundPropertyAccess(node, thisReference, containingProperty, LookupResultKind.Viable, null, hasError);
+                    var receiverReference = new BoundPropertyAccess(node, thisReference, containingProperty, LookupResultKind.Viable, containingProperty.Type, hasError);
                     receiverReference = receiverReference.MakeCompilerGenerated();
                     return receiverReference;
                 }
@@ -2078,6 +2050,51 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return receiverReference;
                 }
             }
+        }
+
+        private FieldSymbol BindFieldMembers(NamedTypeSymbol currentType, Symbol member)
+        {
+            FieldSymbol containingField = null;
+            foreach (var field in currentType.GetMembers().OfType<FieldSymbol>())
+            {
+                if (field.IsAbsorb)
+                {
+                    foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<FieldSymbol>())
+                    {
+                        if (absorbedFieldMember == member)
+                            containingField = field;
+                    }
+                    foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<PropertySymbol>())
+                    {
+                        if (absorbedFieldMember == member)
+                            containingField = field;
+                    }
+                }
+            }
+            return containingField;
+        }
+
+        private PropertySymbol BindPropertyMembers(NamedTypeSymbol currentType, Symbol member)
+        {
+            PropertySymbol containingProperty = null;
+
+            foreach (var property in currentType.GetMembers().OfType<PropertySymbol>())
+            {
+                if (property.IsAbsorb)
+                {
+                    foreach (var absorbedPropertyMember in property.Type.GetMembers().OfType<FieldSymbol>())
+                    {
+                        if (absorbedPropertyMember == member)
+                            containingProperty = property;
+                    }
+                    foreach (var absorbedPropertyMember in property.Type.GetMembers().OfType<PropertySymbol>())
+                    {
+                        if (absorbedPropertyMember == member)
+                            containingProperty = property;
+                    }
+                }
+            }
+            return containingProperty;
         }
 
         internal Symbol ContainingMember()
