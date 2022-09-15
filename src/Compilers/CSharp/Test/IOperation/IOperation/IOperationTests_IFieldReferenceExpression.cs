@@ -743,6 +743,7 @@ IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: 
             VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
         }
 
+        // !absorb!
         [CompilerTrait(CompilerFeature.IOperation)]
         [Fact]
         public void IFieldReferenceExpression_AbsorbedNotFirstField()
@@ -775,5 +776,152 @@ IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: 
             var expectedDiagnostics = DiagnosticDescription.None;
             VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
         }
+
+        // !absorb!
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_AbsorbedStruct()
+        {
+            string source = @"
+struct A
+{
+    public int X;
+}
+
+class C
+{
+    absorb A a = new A();
+
+    void Blah()
+    {
+        X = 1;
+        var i1 = /*<bind>*/X/*</bind>*/;
     }
 }
+";
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+
+            var expectedDiagnostics = DiagnosticDescription.None;
+
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
+
+        // !absorb!
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_DoubleAbsorbed()
+        {
+            string source = @"
+class B
+{
+    public int X = 1;
+}
+
+class A
+{
+    public absorb B b = new B();
+}
+
+class C
+{
+    absorb A a = new A();
+
+    void Blah()
+    {
+        var i1 = /*<bind>*/X/*</bind>*/;
+    }
+}
+";
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 B.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: B A.b (OperationKind.FieldReference, Type: B, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+                    Instance Receiver:
+                        IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+
+            var expectedDiagnostics = DiagnosticDescription.None;
+
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
+
+        // !absorb!
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_AbsorbedInherited()
+        {
+            string source = @"
+class B
+{
+    public int X = 1;
+}
+
+class A : B{}
+
+class C
+{
+    absorb A a = new A();
+
+    void Blah()
+    {
+        var i1 = /*<bind>*/X/*</bind>*/;
+    }
+}
+";
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 B.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+
+            var expectedDiagnostics = DiagnosticDescription.None;
+
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
+
+        // !absorb!
+        [CompilerTrait(CompilerFeature.IOperation)]
+        [Fact]
+        public void IFieldReferenceExpression_AbsorbedMethod()
+        {
+            string source = @"
+class A
+{
+    public int X = 1;
+    public void SetX(int value)
+    {
+        X = value;
+    }
+}
+
+class C
+{
+    absorb A a = new A();
+
+    void Blah()
+    {
+        /*<bind>*/SetX(4)/*</bind>*/;
+    }
+}
+";
+            string expectedOperationTree = @"
+IFieldReferenceOperation: System.Int32 A.X (OperationKind.FieldReference, Type: System.Int32) (Syntax: 'X')
+    Instance Receiver:
+        IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
+            Instance Receiver:
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+
+            var expectedDiagnostics = DiagnosticDescription.None;
+
+            VerifyOperationTreeAndDiagnosticsForTest<IdentifierNameSyntax>(source, expectedOperationTree, expectedDiagnostics);
+        }
+    }
+}
+

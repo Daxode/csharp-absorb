@@ -1710,7 +1710,35 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                return TryBindInteractiveReceiver(syntax, declaringType);
+                var hasErrors = false;
+
+                // !absorb!
+                // The declaring type of our field is not our containing type!
+                // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
+
+                // First we need to find the actual absorbed field that has our bound FieldSymbol as a member
+                FieldSymbol containingField = null;
+                foreach (var field in currentType.GetMembers().OfType<FieldSymbol>())
+                {
+                    if (field.IsAbsorb)
+                    {
+                        foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<MethodSymbol>())
+                        {
+                            if (absorbedFieldMember == members[0])
+                                containingField = field;
+                        }
+                    }
+                }
+
+                if (containingField == null)
+                    hasErrors = true;
+
+                var thisReference = ThisReference(syntax, currentType, hasErrors, wasCompilerGenerated: true);
+                var receiverReference = new BoundFieldAccess(syntax, thisReference, containingField, null, hasErrors);
+                receiverReference = receiverReference.MakeCompilerGenerated();
+                return receiverReference;
+
+                //return TryBindInteractiveReceiver(syntax, declaringType);
             }
         }
 
@@ -2009,6 +2037,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                     if (field.IsAbsorb)
                     {
                         foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<FieldSymbol>())
+                        {
+                            if (absorbedFieldMember == member)
+                                containingField = field;
+                        }
+                        foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<PropertySymbol>())
                         {
                             if (absorbedFieldMember == member)
                                 containingField = field;
