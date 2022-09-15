@@ -45,6 +45,8 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
 
             public bool ReturnsByRef => _symbol.ReturnsByRef;
 
+            public bool IsAbsorb => _symbol.IsAbsorb;
+
             public bool ReturnsByRefReadonly => _symbol.ReturnsByRefReadonly;
 
             public RefKind RefKind => _symbol.RefKind;

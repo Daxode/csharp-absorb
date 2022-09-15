@@ -55,7 +55,6 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
             public bool IsSealed => _symbol.IsSealed;
 
             public bool IsStatic => _symbol.IsStatic;
-            public bool IsAbsorb => _symbol.IsAbsorb;
 
             public bool IsVirtual => _symbol.IsVirtual;
 

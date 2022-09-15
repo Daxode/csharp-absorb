@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
+using Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Roslyn.Utilities;
@@ -1305,25 +1306,22 @@ symIsHidden:;
             {
                 return ImmutableArray<Symbol>.Empty;
             }
-            else
+            else if (nsOrType is SourceMemberContainerTypeSymbol namedTypeSymbol)
             {
                 // !absorb!
-                if (nsOrType is SourceMemberContainerTypeSymbol namedTypeSymbol)
-                {
-                    var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
-                    immutableBuilder.AddRange(nsOrType.GetMembers(name));
+                var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
+                immutableBuilder.AddRange(nsOrType.GetMembers(name));
 
-                    var absorbedMembers = namedTypeSymbol.GetAbsorbedMembers(name);
-                    if(absorbedMembers.Length != 0)
-                    {
-                        immutableBuilder.AddRange(absorbedMembers);
-                    }
-                    return immutableBuilder.ToImmutable();
-                }
-                else
+                var absorbedMembers = namedTypeSymbol.GetAbsorbedMembers(name);
+                if (absorbedMembers.Length != 0)
                 {
-                    return nsOrType.GetMembers(name);
+                    immutableBuilder.AddRange(absorbedMembers);
                 }
+                return immutableBuilder.ToImmutable();
+            }
+            else
+            {
+                return nsOrType.GetMembers(name);
             }
         }
 
