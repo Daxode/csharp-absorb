@@ -1465,21 +1465,17 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 {
                     // Do you have a match
                     var absorbedMembers = field.Type.GetMembers(name);
-                    if(absorbedMembers.Length != 0)
+                    if (absorbedMembers.Length != 0)
                         immutableBuilder.AddRange(absorbedMembers);
 
                     // (Do you have a match) in you hierarchy
                     if (field.Type.BaseTypeNoUseSiteDiagnostics is SourceMemberContainerTypeSymbol i_namedTypeSymbol)
                     {
                         // Search the members of the base
-                        var inheritedMembers = i_namedTypeSymbol.GetMembers(name);
+
+                        var inheritedMembers = i_namedTypeSymbol.BindFieldMembers(name);
                         if (inheritedMembers.Length != 0)
                             immutableBuilder.AddRange(inheritedMembers);
-
-                        // Search the absorbed members of the base
-                        var absorbedAbsorbedMembers = i_namedTypeSymbol.GetAbsorbedMembers(name);
-                        if (absorbedAbsorbedMembers.Length != 0)
-                            immutableBuilder.AddRange(absorbedAbsorbedMembers);
                     }
 
                     // (Do you have a match) in your absorbed variables
@@ -1491,6 +1487,35 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     }
                 }
             }
+            return immutableBuilder.ToImmutable();
+        }
+
+
+        private ImmutableArray<Symbol> BindFieldMembers(string name)
+        {
+            var immutableBuilder = ImmutableArray.CreateBuilder<Symbol>();
+
+            // (Do you have a match) in you hierarchy
+            // Search the members of the base
+            var members = GetMembers(name);
+            if (members.Length != 0)
+                immutableBuilder.AddRange(members);
+
+            foreach (var fieldMember in GetMembers().OfType<FieldSymbol>())
+            {
+                if (fieldMember.Type.BaseTypeNoUseSiteDiagnostics is SourceMemberContainerTypeSymbol i_namedTypeSymbol)
+                {
+                    var inheritedMembers = i_namedTypeSymbol.BindFieldMembers(name);
+                    if (inheritedMembers.Length != 0)
+                        immutableBuilder.AddRange(inheritedMembers);
+                }
+            }
+
+            // Search the absorbed members of the base
+            var absorbedMembers = GetAbsorbedMembers(name);
+            if (absorbedMembers.Length != 0)
+                immutableBuilder.AddRange(absorbedMembers);
+
             return immutableBuilder.ToImmutable();
         }
 

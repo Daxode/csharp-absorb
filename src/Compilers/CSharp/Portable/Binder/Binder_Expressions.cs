@@ -2029,11 +2029,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // This may be due to the fact that we are looking at an field that has been absorbed from a receiver member marked with 'absorb'
 
                 // First we need to find the actual absorbed field that has our bound FieldSymbol as a member
-                FieldSymbol containingField = BindFieldMembers(currentType, member);
+                FieldSymbol containingField = BindAbsorbedFieldMembers(currentType, member);
 
                 if (containingField == null)
                 {
-                    PropertySymbol containingProperty = BindPropertyMembers( currentType, member);
+                    PropertySymbol containingProperty = BindPropertyMembers(currentType, member);
 
                     var hasError = containingProperty == null;
 
@@ -2052,7 +2052,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
         }
 
-        private FieldSymbol BindFieldMembers(NamedTypeSymbol currentType, Symbol member)
+        private FieldSymbol BindAbsorbedFieldMembers(NamedTypeSymbol currentType, Symbol member)
         {
             FieldSymbol containingField = null;
             foreach (var field in currentType.GetMembers().OfType<FieldSymbol>())
@@ -2062,14 +2062,52 @@ namespace Microsoft.CodeAnalysis.CSharp
                     foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<FieldSymbol>())
                     {
                         if (absorbedFieldMember == member)
-                            containingField = field;
+                            return field;
+
+                        // (Do you have a match) in your members hierarchy                      
+                        if ((containingField = BindInheritedFieldMembers(absorbedFieldMember, member)) != null)
+                            return containingField;
+
+                        // (Do you have a match) in your absorbed variables
+                        if (field.Type is SourceMemberContainerTypeSymbol a_namedTypeSymbol)
+                        {
+                            if ((containingField = BindAbsorbedFieldMembers(a_namedTypeSymbol, member)) != null)
+                                return containingField;
+                        }
                     }
+
+                    // (Do you have a match) in you hierarchy                      
+                    if ((containingField = BindInheritedFieldMembers(field, member)) != null)
+                        return containingField;
+
                     foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<PropertySymbol>())
                     {
                         if (absorbedFieldMember == member)
-                            containingField = field;
+                            return field;
                     }
                 }
+            }
+            return containingField;
+        }
+
+        private FieldSymbol BindInheritedFieldMembers(FieldSymbol field, Symbol member)
+        {
+            FieldSymbol containingField = null;
+            // (Do you have a match) in you hierarchy
+            if (field.Type.BaseTypeNoUseSiteDiagnostics is SourceMemberContainerTypeSymbol i_namedTypeSymbol)
+            {
+                foreach (var absorbedFieldMember in i_namedTypeSymbol.GetMembers().OfType<FieldSymbol>())
+                {
+                    if (absorbedFieldMember == member)
+                        return absorbedFieldMember;
+
+                    if ((containingField = BindInheritedFieldMembers(absorbedFieldMember, member)) != null)
+                        return containingField;
+                }
+
+                // Search the absorbed members of the base
+                if ((containingField = BindAbsorbedFieldMembers(i_namedTypeSymbol, member)) != null)
+                    return containingField;
             }
             return containingField;
         }
