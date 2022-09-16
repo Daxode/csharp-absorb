@@ -842,9 +842,7 @@ IFieldReferenceOperation: System.Int32 B.X (OperationKind.FieldReference, Type: 
     Instance Receiver:
         IFieldReferenceOperation: B A.b (OperationKind.FieldReference, Type: B, IsImplicit) (Syntax: 'X')
             Instance Receiver:
-                IFieldReferenceOperation: A C.a (OperationKind.FieldReference, Type: A, IsImplicit) (Syntax: 'X')
-                    Instance Receiver:
-                        IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
+                IInstanceReferenceOperation (ReferenceKind: ContainingTypeInstance) (OperationKind.InstanceReference, Type: C, IsImplicit) (Syntax: 'X')";
 
             var expectedDiagnostics = DiagnosticDescription.None;
 

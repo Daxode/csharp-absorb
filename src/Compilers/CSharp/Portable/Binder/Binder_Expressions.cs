@@ -2066,7 +2066,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         // (Do you have a match) in your members hierarchy                      
                         if ((containingField = BindInheritedFieldMembers(absorbedFieldMember, member)) != null)
-                            return containingField;
+                            return field;
 
                         // (Do you have a match) in your absorbed variables
                         if (field.Type is SourceMemberContainerTypeSymbol a_namedTypeSymbol)
@@ -2078,7 +2078,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // (Do you have a match) in you hierarchy                      
                     if ((containingField = BindInheritedFieldMembers(field, member)) != null)
-                        return containingField;
+                        return field;
 
                     foreach (var absorbedFieldMember in field.Type.GetMembers().OfType<PropertySymbol>())
                     {
